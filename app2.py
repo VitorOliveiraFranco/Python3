@@ -1,48 +1,6 @@
 import os
-from avaliacao import Avaliacao
+from restaurante import Restaurante
 
-class Restaurante:
-    restaurantes=[]
-    
-    def __init__(self,nome,categoria):
-        self._nome=nome.title()
-        self._categoria=categoria.upper()
-        self._avaliacao=[]
-        self._ativo=False
-        
-        Restaurante.restaurantes.append(self)
-
-    def __str__(self):
-        return f'{self._nome} | {self._categoria}'
-    
-    @classmethod
-    def listar_restaurantes(cls):
-        print('LISTANDO RESTAURANTES\n')
-        for restaurante in cls.restaurantes:
-            nome_do_restaurante=restaurante._nome
-            categoria=restaurante._categoria
-            ativo= 'Ativado' if restaurante._ativo else 'Desativado'
-            print(f'- {nome_do_restaurante.ljust(20)} | {categoria.ljust(20)} | {ativo}')
-        
-        voltar_menu_principal()
-
-    @classmethod
-    def procurar_restaurante(cls, nome):
-        restaurante_encontrado=False
-        for restaurante in cls.restaurantes:
-            if nome.title() == restaurante._nome:
-                restaurante_encontrado=True
-                return restaurante
-        if not restaurante_encontrado:
-            print(f'O restaurante {nome} não foi encontrado')
-    
-    @property
-    def alterar_estado_do_restaurante(self):
-        self._ativo=not self._ativo
-        mensagem=f'O restaurante {self._nome} foi ativado com sucesso' if self._ativo else f'O restaurante {self._nome} foi desativado com sucesso'
-        print(mensagem)
-        voltar_menu_principal()
-        
 def exibir_nome_do_programa():
     print('Sabor Express')
     
@@ -50,23 +8,32 @@ def exibir_opcoes():
     print('1. Cadastrar restaurante')
     print('2. Listar restaurantes')
     print('3. Alterar estado do restaurante')
-    print('4. Sair\n')
+    print('4. Fazer uma avaliação')
+    print('5. Sair')
+    print()
     
 def voltar_menu_principal():
     input('Digite uma tecla para voltar ao menu principal')
     main()
     
 def opcao_invalida():
-    print('Opção invalida\n')
+    print('Opção invalida')
+    print()
     voltar_menu_principal()
     
 def cadastrar_novo_restaurante():
     exibir_subtitulo('Alterando estado do restaurante')
     nome_do_restaurante=input('Digite o nome do restaurante que você quer cadastrar: ')
+    print()
     categoria=input(f'Digite a categoria do restaurante {nome_do_restaurante}: ')
+    print()
     dados_do_restaurante=Restaurante(nome_do_restaurante, categoria)
     print(f'O restaurante {nome_do_restaurante} foi cadastrado com sucesso!')
+    print()
     voltar_menu_principal()
+
+def finalizar_app():
+    exibir_subtitulo('App finalizado')
 
 def exibir_subtitulo(texto):
     os.system('cls')
@@ -85,9 +52,17 @@ def escolher_opcao():
         elif opcao_escolhida==2:
             Restaurante.listar_restaurantes()
         elif opcao_escolhida==3:
-            nome_do_restaurante=input('Digite o nome do restaurante que você deseja alterar o estado:')
-            acho_nome=Restaurante.procurar_restaurante(nome_do_restaurante)
-            acho_nome.alterar_estado_do_restaurante
+            exibir_subtitulo('Alterando estado do restaurante')
+            nome_do_restaurante=input('Digite o nome do restaurante que você deseja alterar o estado: ')
+            achou_nome=Restaurante.procurar_restaurante(nome_do_restaurante)
+            achou_nome.alterar_estado_do_restaurante
+        elif opcao_escolhida==4:
+            exibir_subtitulo('Fazendo uma avaliação')
+            nome_do_restaurante=input('Digite o nome do restaurante que você deseja fazer uma avaliação: ')
+            achou_nome=Restaurante.procurar_restaurante(nome_do_restaurante)
+            achou_nome.receber_avaliacao('Vitor', 10)
+        elif opcao_escolhida==5:
+            finalizar_app()
         else:
             opcao_invalida()
     except:
