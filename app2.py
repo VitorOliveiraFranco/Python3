@@ -59,8 +59,13 @@ def escolher_opcao():
         elif opcao_escolhida==4:
             exibir_subtitulo('Fazendo uma avaliação')
             nome_do_restaurante=input('Digite o nome do restaurante que você deseja fazer uma avaliação: ')
+            print('')
             achou_nome=Restaurante.procurar_restaurante(nome_do_restaurante)
-            achou_nome.receber_avaliacao('Vitor', 10)
+            cliente=input('Digite seu nome: ')
+            print('')
+            nota=int(input('Digite uma nota: '))
+            print('')
+            achou_nome.receber_avaliacao(cliente, nota)
         elif opcao_escolhida==5:
             finalizar_app()
         else:
